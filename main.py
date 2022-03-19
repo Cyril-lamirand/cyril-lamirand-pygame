@@ -26,8 +26,15 @@ while running:
     for projectile in game.player.all_projectiles:
         projectile.move()
 
+    # Faire avancer les monstres vers le joueur
+    for monster in game.all_monsters:
+        monster.forward()
+
     # Dessiner le projectile
     game.player.all_projectiles.draw(screen)
+
+    # Dessiner les monstres
+    game.all_monsters.draw(screen)
 
     # Vérifier si le joueur veut se déplacer
     if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
