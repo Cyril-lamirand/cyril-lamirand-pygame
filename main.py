@@ -1,4 +1,5 @@
 import pygame
+import math
 # Classes
 from game import Game
 pygame.init()
@@ -8,6 +9,20 @@ pygame.display.set_caption("Cyril LAMIRAND - Shooter")
 screen = pygame.display.set_mode((1080, 720))
 # Gestion du fond d'écran du jeu
 background = pygame.image.load("assets/bg.jpg")
+
+# Charger la bannière
+banner = pygame.image.load("assets/banner.png")
+banner = pygame.transform.scale(banner, (500, 500))
+banner_rect = banner.get_rect()
+banner_rect.x = math.ceil(screen.get_width() / 4)
+
+# Bouton pour lancer la partie
+play_button = pygame.image.load("assets/button.png")
+play_button = pygame.transform.scale(play_button, (400, 150))
+play_button_rect = play_button.get_rect()
+play_button_rect.x = math.ceil(screen.get_width() / 3.33)
+play_button_rect.y = math.ceil(screen.get_height() / 2)
+
 
 running = True
 
@@ -19,32 +34,13 @@ while running:
     # Appliquer l'image de fond du jeu
     screen.blit(background, (0, -200))
 
-    # Appliquer le joueur dans la fenêtre
-    screen.blit(game.player.image, game.player.rect)
-
-    # Afficher / Actualiser la barre de vie du joueur
-    game.player.update_health_bar(screen)
-
-    # Récupérer les projectiles du joueur
-    for projectile in game.player.all_projectiles:
-        projectile.move()
-
-    # Faire avancer les monstres vers le joueur
-    for monster in game.all_monsters:
-        monster.forward()
-        monster.update_health_bar(screen)
-
-    # Dessiner le projectile
-    game.player.all_projectiles.draw(screen)
-
-    # Dessiner les monstres
-    game.all_monsters.draw(screen)
-
-    # Vérifier si le joueur veut se déplacer
-    if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
-        game.player.move_right()
-    elif game.pressed.get(pygame.K_LEFT) and game.player.rect.x > 0:
-        game.player.move_left()
+    # Vérifier si le jeu à commencer ou non
+    if game.is_playing:
+        # Déclencher les instructions de la partie
+        game.update(screen)
+    else:
+        screen.blit(play_button, play_button_rect)
+        screen.blit(banner, banner_rect)
 
     # Mettre à jour la fenêtre du jeu
     pygame.display.flip()
@@ -65,5 +61,9 @@ while running:
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if play_button_rect.collidepoint(event.pos):
+                game.start()
 
 
