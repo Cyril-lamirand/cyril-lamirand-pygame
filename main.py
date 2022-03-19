@@ -22,6 +22,13 @@ while running:
     # Appliquer le joueur dans la fenêtre
     screen.blit(game.player.image, game.player.rect)
 
+    # Récupérer les projectiles du joueur
+    for projectile in game.player.all_projectiles:
+        projectile.move()
+
+    # Dessiner le projectile
+    game.player.all_projectiles.draw(screen)
+
     # Vérifier si le joueur veut se déplacer
     if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
         game.player.move_right()
@@ -41,6 +48,10 @@ while running:
         # Detecter si un joueur lache une touche du clavier
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True
+
+            if event.key == pygame.K_SPACE:
+                game.player.lauch_projectile()
+
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
