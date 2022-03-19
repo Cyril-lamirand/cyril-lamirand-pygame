@@ -22,6 +22,9 @@ while running:
     # Appliquer le joueur dans la fenêtre
     screen.blit(game.player.image, game.player.rect)
 
+    # Afficher / Actualiser la barre de vie du joueur
+    game.player.update_health_bar(screen)
+
     # Récupérer les projectiles du joueur
     for projectile in game.player.all_projectiles:
         projectile.move()
@@ -29,6 +32,7 @@ while running:
     # Faire avancer les monstres vers le joueur
     for monster in game.all_monsters:
         monster.forward()
+        monster.update_health_bar(screen)
 
     # Dessiner le projectile
     game.player.all_projectiles.draw(screen)

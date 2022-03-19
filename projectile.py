@@ -15,6 +15,8 @@ class Projectile(pygame.sprite.Sprite):
         self.origin_image = self.image
         self.angle = 0
 
+
+
     def rotate(self):
         self.angle += 8
         self.image = pygame.transform.rotozoom(self.origin_image, self.angle, 1)
@@ -27,8 +29,10 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.x += self.velocity
         self.rotate()
 
-        if self.player.game.check_collision(self, self.player.game.all_monsters):
+        for monster in self.player.game.check_collision(self, self.player.game.all_monsters):
             self.remove()
+            # Infliger des dégats aux monstres
+            monster.damage(self.player.attack)
 
         if self.rect.x > 1080:
             self.remove()
