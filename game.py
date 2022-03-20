@@ -36,6 +36,8 @@ class Game:
         # Barre de l'event Comet
         self.comet_event.update_bar(screen)
 
+        # Actualiser l'animation du joueur
+        self.player.update_animation()
 
         # Récupérer les projectiles du joueur
         for projectile in self.player.all_projectiles:
@@ -45,6 +47,7 @@ class Game:
         for monster in self.all_monsters:
             monster.forward()
             monster.update_health_bar(screen)
+            monster.update_animation()
 
         # Faire tomber les comettes
         for comet in self.comet_event.all_comets:
