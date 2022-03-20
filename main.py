@@ -4,6 +4,10 @@ import math
 from game import Game
 pygame.init()
 
+# Définir la clock
+clock = pygame.time.Clock()
+FPS = 120
+
 # Générer la fenêtre du jeu
 pygame.display.set_caption("Cyril LAMIRAND - Shooter")
 screen = pygame.display.set_mode((1080, 720))
@@ -65,5 +69,8 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if play_button_rect.collidepoint(event.pos):
                 game.start()
+
+    # Fixer le nombre de FPS
+    clock.tick(FPS)
 
 
